@@ -1,4 +1,3 @@
-# File: main.py
 from weapon import Weapon
 from hero import Hero
 from monster import Monster
@@ -9,7 +8,10 @@ def main():
     excalibur = Weapon("Excalibur", 25)
     hero = Hero("Arthur", 100)
     hero.equip(excalibur)
-    beast = Monster("The Beast", 100, 15)
+
+    loot_item = Medkit("Super Medkit", 50)
+
+    beast = Monster("The Beast", 100, 15, loot = loot_item)
 
     kit1 = Medkit("Bandage", 10)
     kit2 = Medkit("Antibiotics", 15)
@@ -36,9 +38,14 @@ def main():
         print(f"\n{beast.name} attacks back!")
         beast.attack(hero)
 
-    print("\n--- GAME OVER ---")
     if hero.get_hp() > 0:
         print("The Hero Wins! 🏆")
+
+        if beast.loot:
+            print(f"You found loot: {beast.loot.name}")
+            hero.add_item(beast.loot)
+            hero.view_inventory()
+
     else:
         print("The Monster Wins! ☠️")
 
