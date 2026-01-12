@@ -48,6 +48,39 @@ def main():
         elif choice == "2":
             hero.view_inventory()
 
+            if len(hero.inventory) > 0:
+                print("Type item number to use it (or 0 to cancel)")
+                try:
+                    item_choice = int(input("> "))
+
+                    if item_choice == 0:
+                        print("Cancelled.")
+
+                    elif 1 <= item_choice <= len(hero.inventory):
+
+                        item_to_use = hero.inventory[item_choice - 1]
+
+                        if isinstance(item_to_use, Medkit):
+                            hero.heal(item_to_use.healing_amount)
+                            hero.inventory.pop(item_choice - 1)
+                            print(f"Used {item_to_use.name}!")
+
+                            print(f"\n> {beast.name} attacks while you heal!")
+                            beast.attack(hero)
+
+                        elif isinstance(item_to_use, Weapon):
+                            hero.equip(item_to_use)
+                            print(f"Equipped {item_to_use.name}!")
+
+                            print(f"\n> {beast.name} attacks while you switch gear!")
+                            beast.attack(hero)
+
+                    else:
+                        print("Invalid item number.")
+
+                except ValueError:
+                    print("Please type a valid number.")
+
         elif choice == "3":
             print("You ran away like a coward!")
             break
