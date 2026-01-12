@@ -29,14 +29,31 @@ def main():
     print(f"\n--- BATTLE START: {hero.name} vs {beast.name} ---")
 
     while hero.get_hp() > 0 and beast.get_hp() > 0:
-        print(f"\n{hero.name} attacks!")
-        hero.attack(beast)
+        print(f"\n{hero.name}: {hero.get_hp()} HP | {beast.name}: {beast.get_hp()} HP")
+        print("OPTIONS: 1. Attack 2. Inventory 3. Run")
 
-        if beast.get_hp() == 0:
+        choice = input("Your Move: ")
+
+        if choice == "1":
+            print(f"\n> {hero.name} attacks!")
+            hero.attack(beast)
+
+            if beast.get_hp() == 0:
+                print(f"--> You defeated {beast.name}!")
+                break
+
+            print(f"\n> {beast.name} attacks back!")
+            beast.attack(hero)
+
+        elif choice == "2":
+            hero.view_inventory()
+
+        elif choice == "3":
+            print("You ran away like a coward!")
             break
 
-        print(f"\n{beast.name} attacks back!")
-        beast.attack(hero)
+        else:
+            print("Invalid command! Type 1, 2, or 3")
 
     if hero.get_hp() > 0:
         print("The Hero Wins! 🏆")
