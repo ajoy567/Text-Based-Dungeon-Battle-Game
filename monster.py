@@ -1,3 +1,4 @@
+import random
 from character import Character
 
 class Monster(Character):
@@ -8,5 +9,15 @@ class Monster(Character):
         self.loot = loot
 
     def attack(self, target):
-        print(f"{self.name} bites the enemy!")
-        target.take_damage(self.bite_strength)
+
+        min_dmg = self.bite_strength - 4
+        max_dmg = self.bite_strength + 4
+
+        if min_dmg < 0:
+            min_dmg = 0
+
+        actual_damage = random.randint(min_dmg, max_dmg)
+
+
+        print(f"{self.name} bites widely! (Dmg: {actual_damage})")
+        target.take_damage(actual_damage)
