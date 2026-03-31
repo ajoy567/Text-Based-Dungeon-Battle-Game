@@ -2,9 +2,31 @@ from weapon import Weapon
 from hero import Hero
 from monster import Monster
 from medkit import Medkit
+import json
 
+def save_result(result):
+    try:
+        with open("stats.json","r") as f:
+            stats = json.load(f)
+    except FileNotFoundError:
+        stats = {"wins": 0, "losses": 0, "ran": 0}
+
+    if result == "Win":
+        stats["wins"] += 1
+    elif result == "Loss":
+        stats["losses"] += 1
+    elif result == "Ran":
+        stats["ran"] += 1
+
+    with open("stats.json","w") as f:
+        json.dump(stats, f)
+
+    print(f"Progress saved")
 
 def main():
+
+    ran_away = False
+
     excalibur = Weapon("Excalibur", 25)
     hero = Hero("Arthur", 100)
     hero.equip(excalibur)
@@ -83,21 +105,28 @@ def main():
 
         elif choice == "3":
             print("You ran away like a coward!")
+            ran_away = True
             break
 
         else:
             print("Invalid command! Type 1, 2, or 3")
 
-    if hero.get_hp() > 0:
-        print("The Hero Wins! 🏆")
+    if ran_away:
+        save_result("Ran")
 
-        if beast.loot:
-            print(f"You found loot: {beast.loot.name}")
-            hero.add_item(beast.loot)
-            hero.view_inventory()
+    else :
+        if hero.get_hp() > 0:
+            print("The Hero Wins! 🏆")
+            save_result("Win")
 
-    else:
-        print("The Monster Wins! ☠️")
+            if beast.loot:
+                print(f"You found loot: {beast.loot.name}")
+                hero.add_item(beast.loot)
+                hero.view_inventory()
+
+        else:
+            print("The Monster Wins! ☠️")
+            save_result("Loss")
 
 
 if __name__ == "__main__":
