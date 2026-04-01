@@ -3,6 +3,13 @@ from hero import Hero
 from monster import Monster
 from medkit import Medkit
 import json
+import logging
+
+logging.basicConfig(
+    filename = "logbook.log",
+    level = logging.INFO,
+    format = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
+)
 
 def save_result(result):
     try:
@@ -21,7 +28,7 @@ def save_result(result):
     with open("stats.json","w") as f:
         json.dump(stats, f)
 
-    print(f"Progress saved")
+    logging.info("Progress saved")
 
 def load_stats():
     try:
@@ -62,6 +69,8 @@ def main():
     hero.heal(super_kit.healing_amount)
 
     print(f"\n--- BATTLE START: {hero.name} vs {beast.name} ---")
+
+    logging.info(f"Battle Start: {hero.name} vs {beast.name}")
 
     while hero.get_hp() > 0 and beast.get_hp() > 0:
         print(f"\n{hero.name}: {hero.get_hp()} HP | {beast.name}: {beast.get_hp()} HP")
@@ -125,11 +134,12 @@ def main():
             print("Invalid command! Type 1, 2, or 3")
 
     if ran_away:
+        logging.info("Hero ran away like a coward!")
         save_result("Ran")
 
     else :
         if hero.get_hp() > 0:
-            print("The Hero Wins! 🏆")
+            logging.info(f"{hero.name} win against {beast.name}!")
             save_result("Win")
 
             if beast.loot:
@@ -138,7 +148,7 @@ def main():
                 hero.view_inventory()
 
         else:
-            print("The Monster Wins! ☠️")
+            logging.info(f"{hero.name} has loss")
             save_result("Loss")
 
 
