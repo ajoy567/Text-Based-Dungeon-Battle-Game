@@ -23,8 +23,21 @@ def save_result(result):
 
     print(f"Progress saved")
 
+def load_stats():
+    try:
+        with open("stats.json", "r") as f:
+            stats = json.load(f)
+        print(f"Welcome back, Arthur!")
+        print(f"Your Stats:")
+        print(f"- Wins: {stats['wins']}")
+        print(f"- Losses: {stats['losses']}")
+        print(f"- Ran Away: {stats['ran']}")
+    except FileNotFoundError:
+        print("No stats yet. This is your first game!")
+
 def main():
 
+    load_stats()
     ran_away = False
 
     excalibur = Weapon("Excalibur", 25)
