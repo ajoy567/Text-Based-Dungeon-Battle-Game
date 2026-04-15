@@ -1,5 +1,9 @@
 from character import Character
 
+
+class NoWeaponError(Exception):
+    pass
+
 class Hero(Character):
     def __init__(self, name, hp):
         super().__init__(hp)
@@ -17,7 +21,7 @@ class Hero(Character):
 
     def attack(self, target):
         if self.weapon is None:
-            print("No Weapon! Cannot Attack...")
+            raise NoWeaponError("Hero has no weapon equipped!")
         else:
             dmg = self.weapon.use_weapon()
             target.take_damage(dmg)

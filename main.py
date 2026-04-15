@@ -1,5 +1,5 @@
 from weapon import Weapon
-from hero import Hero
+from hero import Hero, NoWeaponError
 from monster import Monster
 from medkit import Medkit
 import json
@@ -47,9 +47,11 @@ def main():
     load_stats()
     ran_away = False
 
-    excalibur = Weapon("Excalibur", 25)
+    sword = Weapon("Excalibur", 25)
+    dagger = Weapon("Dagger", 12)
     hero = Hero("Arthur", 100)
-    hero.equip(excalibur)
+    hero.equip(sword)
+    hero.add_item(dagger)
 
     loot_item = Medkit("Super Medkit", 50)
 
@@ -74,13 +76,16 @@ def main():
 
     while hero.get_hp() > 0 and beast.get_hp() > 0:
         print(f"\n{hero.name}: {hero.get_hp()} HP | {beast.name}: {beast.get_hp()} HP")
-        print("OPTIONS: 1. Attack 2. Inventory 3. Run")
+        print("OPTIONS: 1. Attack 2. Inventory 3. Switch Weapon 4. Run")
 
         choice = input("Your Move: ")
 
         if choice == "1":
             print(f"\n> {hero.name} attacks!")
-            hero.attack(beast)
+            try:
+                hero.attack(beast)
+            except NoWeaponError as e:
+                print(f"Can't attack! {e}")
 
             if beast.get_hp() == 0:
                 print(f"--> You defeated {beast.name}!")
@@ -126,6 +131,26 @@ def main():
                     print("Please type a valid number.")
 
         elif choice == "3":
+            weapons = [item for item in hero.inventory if isinstance(item, Weapon)]
+
+            if len(weapons) == 0:
+                print(f"No Weapons in Inventory!")
+
+            else:
+                print("\n--------Available Weapons--------")
+                for index, weapon in enumerate(weapons):
+                    print(f"{index + 1}. {weapon.name} (Damage: {weapon.damage})")
+
+                try:
+                    weapon_choice = int(input("> "))
+                    if 1 <= weapon_choice <= len(weapons):
+                        hero.equip(weapons[weapon_choice - 1])
+                    else:
+                        print("Invalid choice!")
+                except ValueError:
+                    print("Please enter a valid number!")
+
+        elif choice == "4":
             print("You ran away like a coward!")
             ran_away = True
             break
