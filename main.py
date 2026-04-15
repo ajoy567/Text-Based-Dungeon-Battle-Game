@@ -150,6 +150,9 @@ def main():
                 except ValueError:
                     print("Please enter a valid number!")
 
+            print(f"\n> {beast.name} attacks while you switch gear!")
+            beast.attack(hero)
+
         elif choice == "4":
             print("You ran away like a coward!")
             ran_away = True

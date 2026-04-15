@@ -5,6 +5,9 @@ class Weapon:
         self.name = name
         self.damage = damage
 
+    def __str__(self):
+        return f"[{self.name}: {self.damage} DMG]"
+
     def use_weapon(self):
         print(f"Swung the {self.name}")
         min_dmg = self.damage - 5

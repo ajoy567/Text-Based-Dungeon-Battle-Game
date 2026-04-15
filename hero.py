@@ -13,7 +13,7 @@ class Hero(Character):
 
     def add_item(self, item):
         self.inventory.append(item)
-        print(f"{self.name} picked up {item}")
+        print(f"{self.name} found {item}")
 
     def equip(self, weapon_obj):
         self.weapon = weapon_obj
